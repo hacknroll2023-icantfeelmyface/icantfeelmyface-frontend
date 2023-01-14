@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react"
+import { Stack } from "@chakra-ui/react"
+
+import FileUpload from "./components/FileUpload/FileUpload";
+import StudentsList from "./components/StudentsList/StudentsList";
+import { MockStudentList } from "./mock_data/MockStudentList"
+
+const initialiseStudentList = (studentList) => {
+    return studentList.map((s) => {
+        return {
+            name: s.name,
+            present: false
+        }
+    })
+}
 
 function App() {
+  const [studentList, setStudentList] = useState(initialiseStudentList(MockStudentList))
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+        <Stack>
+          <FileUpload
+            setStudentList={setStudentList}
+          />
+          <StudentsList
+            studentList={studentList}
+          />
+        </Stack>
+    </>
   );
 }
 
