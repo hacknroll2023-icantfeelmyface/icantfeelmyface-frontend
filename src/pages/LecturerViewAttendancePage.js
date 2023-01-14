@@ -28,22 +28,23 @@ export default function LecturerViewAttendancePage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {    
-    axios.get(`${URL}/api/class/${classCode}/students/`)
-      .then(res => res.data)
-      .then(data => {
+  useEffect(() => {
+    axios
+      .get(`${URL}/api/class/${classCode}/students/`)
+      .then((res) => res.data)
+      .then((data) => {
         const studentListWithAllAbsentAttendance = initialiseStudentList(data);
-        setStudentList(studentListWithAllAbsentAttendance)
+        setStudentList(studentListWithAllAbsentAttendance);
 
-        console.log(studentList)
-    })
-      .catch(err => console.log(err))
-  }, [])
+        console.log(studentList);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
       <Stack padding="5" spacing="5">
-        <AppHeader />
+        <AppHeader backNavigation={"/lecturer/view-attendance"} />
 
         <Box borderRadius={10} backgroundColor="transparent" padding="5">
           <HStack>
@@ -58,14 +59,12 @@ export default function LecturerViewAttendancePage() {
           
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-
           classCode={classCode}
         />
 
         <StudentsList
           studentList={studentList}
           isLoading={isLoading}
-
           classCode={classCode}
         />
       </Stack>

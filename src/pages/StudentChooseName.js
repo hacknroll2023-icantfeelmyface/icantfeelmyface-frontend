@@ -15,27 +15,27 @@ import axios from "axios";
 import { URL } from "../constants";
 import AppHeader from "../components/AppHeader/AppHeader";
 
-function LecturerChooseClass() {
-  const [classCode, setClassCode] = useState("");
-  const [data, setData] = useState([]);
+function StudentChooseName() {
+  const [names, setNames] = useState([]);
+  const [studentName, setStudentName] = useState("James");
+
+  //  #TODO - Get all students names from database
 
   React.useEffect(() => {
-    axios.get(`${URL}/api/class/`).then((res) => {
+    // API call to get all student names, to list in the dropdown
+    axios.get(`${URL}/api/students/`).then((res) => {
       console.log(res.data);
-      setData(res.data);
-
-      // classCodesData = res.data;
+      res.data.map((student) => {
+        console.log(student.name);
+        setNames((names) => [...names, student.name]);
+      });
     });
   }, []);
-
-  const handleSubmit = () => {
-    console.log(classCode);
-  };
 
   return (
     <>
       <Stack padding="5" spacing="5">
-        <AppHeader backNavigation={"/lecturer"} />
+        <AppHeader backNavigation={"/student"} />
 
         <Flex justifyContent="center">
           <Stack
@@ -46,25 +46,22 @@ function LecturerChooseClass() {
             padding="10"
           >
             <FormControl>
-              <FormLabel>Class Code</FormLabel>
+              <FormLabel>List of students in all classes.</FormLabel>
               <Select
                 mb="10"
-                placeholder="Select Class"
+                placeholder="Select your Name"
                 onChange={(e) => {
-                  setClassCode(e.target.value);
+                  setStudentName(e.target.value);
                 }}
               >
-                {data.map((classCode) => (
-                  <option value={classCode.id}>{classCode.name}</option>
+                {names.map((name) => (
+                  <option value={name}>{name}</option>
                 ))}
               </Select>
 
-              <Link to={`${classCode}`}>
-                <Button
-                  style={{ width: "100%" }}
-                  onClick={() => handleSubmit()}
-                >
-                  Choose Class to view Attendance
+              <Link to={`${studentName}`}>
+                <Button style={{ width: "100%" }}>
+                  View your Attendance in your classes
                 </Button>
               </Link>
             </FormControl>
@@ -75,4 +72,4 @@ function LecturerChooseClass() {
   );
 }
 
-export default LecturerChooseClass;
+export default StudentChooseName;

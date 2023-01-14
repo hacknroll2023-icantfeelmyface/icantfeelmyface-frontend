@@ -8,6 +8,8 @@ import LecturerLandingPage from "./pages/LecturerLandingPage";
 import LecturerAddClassPage from "./pages/LecturerAddClassPage";
 import LecturerViewAttendancePage from "./pages/LecturerViewAttendancePage";
 import LecturerChooseClass from "./pages/LecturerChooseClass";
+import StudentViewAttendance from "./pages/StudentViewAttendance";
+import StudentChooseName from "./pages/StudentChooseName";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
   {
     path: "/lecturer/view-attendance",
     element: <LecturerChooseClass />,
+  },
+  {
+    path: "/student/view-attendance",
+    element: <StudentChooseName />,
+  },
+  {
+    path: "/student/view-attendance/:name",
+    element: <StudentViewAttendance />,
   },
 ]);
 
