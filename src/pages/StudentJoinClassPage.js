@@ -1,25 +1,57 @@
-import { useState } from "react";
-import { Flex, Box, Stack, Heading, FormControl, FormLabel, Input, Button, useToast } from "@chakra-ui/react"
+import { useState, useEffect } from "react";
+import { Flex, Spinner, Stack, Select, FormControl, FormLabel, Input, Button, useToast } from "@chakra-ui/react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios";
 
+import { URL } from "../constants";
 import AppHeader from "../components/AppHeader/AppHeader";
 
+/* Helper functions */
+const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+
+        fileReader.onload = () => {
+            resolve(fileReader.result);
+        };
+
+        fileReader.onerror = (error) => {
+            reject(error);
+        };
+    });
+};
+
 export default function StudentJoinClassPage() {
+    const [data, setData] = useState([]);
+
     const [name, setName] = useState("")
     const [classCode, setClassCode] = useState("")
     const [file, setFile] = useState("")
 
     const [isLoading, setIsLoading] = useState(false);
+
     const navigate = useNavigate();
 
-    const handleStudentJoinClass = () => {
-        const API_URL = "http://172.31.123.185:8000/api/students/";
+    useEffect(() => {
+        axios.get(`${URL}/api/class/`).then((res) => {
+        //   console.log(res.data);
+          setData(res.data);
+    
+          // classCodesData = res.data;
+        });
+    }, []);
+
+    const handleStudentJoinClass = async () => {        
+        const API_URL = `${URL}/api/students/`;
+
+        // convert the image to a base64 string
+        const encodedFile = await convertBase64(file)
 
         const body = {
             'name': name,
-            'class': classCode,
-            'file': file
+            'class_code': classCode,
+            'image': encodedFile
         }
 
         setIsLoading(true);
@@ -35,7 +67,7 @@ export default function StudentJoinClassPage() {
             .catch((err) => {
                 console.error(err)
 
-                navigate("/student")
+                setIsLoading(false);
             });
     }
 
@@ -58,7 +90,16 @@ export default function StudentJoinClassPage() {
 
                     <FormControl>
                         <FormLabel>Class Code</FormLabel>
-                        <Input type='text' onChange={(e) => setClassCode(e.target.value)}/>
+                            <Select
+                                placeholder="Select Class"
+                                onChange={(e) => {
+                                    setClassCode(e.target.value);
+                                }}
+                            >
+                                {data.map((classCode) => (
+                                    <option value={classCode.name}>{classCode.name}</option>
+                                ))}
+                            </Select>
                     </FormControl>
 
                     <FormControl>
@@ -66,9 +107,9 @@ export default function StudentJoinClassPage() {
                         <Input type='file' style={{ border: "0" }} onChange={handleFileChange} />
                     </FormControl>
 
-                    {/* <Link to="/student"> */}
-                        <Button style={{ width: "100%" }} onClick={handleStudentJoinClass} >Join Class</Button>
-                    {/* </Link> */}
+                    <Flex justifyContent="center">
+                        {isLoading ? <Spinner size="sm" /> : <Button style={{ width: "100%" }} onClick={handleStudentJoinClass} >Join Class</Button>}
+                    </Flex>
                 </Stack>
             </Flex>
         </Stack>
