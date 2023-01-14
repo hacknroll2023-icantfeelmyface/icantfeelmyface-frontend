@@ -5,22 +5,7 @@ import axios from "axios";
 
 import { URL } from "../constants";
 import AppHeader from "../components/AppHeader/AppHeader";
-
-/* Helper functions */
-const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file);
-
-        fileReader.onload = () => {
-            resolve(fileReader.result);
-        };
-
-        fileReader.onerror = (error) => {
-            reject(error);
-        };
-    });
-};
+import { convertBase64 } from "../utils";
 
 export default function StudentJoinClassPage() {
     const [data, setData] = useState([]);

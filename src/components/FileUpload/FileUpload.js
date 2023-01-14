@@ -2,12 +2,16 @@ import { useState } from "react";
 import { Input, Button, Stack, Box, Heading, Flex, Spinner } from "@chakra-ui/react"
 import axios from "axios"
 
+import { URL } from "../../constants";
+import { convertBase64 } from "../../utils";
+
 // const API_URL = 'https://httpbin.org/post';
-const API_URL = 'http://localhost:8000/upload'
+// const API_URL = 'http://localhost:8000/upload'
+const API_URL = `${URL}/api/teachers/analyze_image/`
 
 const AnalyzedFile = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} />
 
-export default function FileUpload({ setStudentList, isLoading, setIsLoading, classCode }) {
+export default function FileUpload({ studentList, setStudentList, isLoading, setIsLoading, classCode }) {
     const [file, setFile] = useState(null);
     const [analyzedFile, setAnalyzedFile] = useState(null);
 
@@ -34,20 +38,22 @@ export default function FileUpload({ setStudentList, isLoading, setIsLoading, cl
         }
     };
 
-    const handleUploadClick = () => {
+    const handleUploadClick = async () => {
         if (!file) {
           return;
         }
 
         setIsLoading(true)
 
-        const formData = new FormData();
-        formData.append('file', file);
-        axios.post(API_URL, formData, {
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        })
+        // convert the image to a base64 string
+        const encodedFile = await convertBase64(file)
+
+        const body = {
+            'student_names': studentList.map(s => s.name),
+            'image': encodedFile
+        }
+
+        axios.post(API_URL, JSON.stringify(body))
           .then((res) => res.data)
           .then((data) => handleUpdate(data))
           .then(() => setIsLoading(false))

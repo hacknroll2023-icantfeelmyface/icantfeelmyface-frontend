@@ -53,7 +53,9 @@ export default function LecturerViewAttendancePage() {
         </Box>
 
         <FileUpload
+          studentList={studentList}
           setStudentList={setStudentList}
+          
           isLoading={isLoading}
           setIsLoading={setIsLoading}
 
