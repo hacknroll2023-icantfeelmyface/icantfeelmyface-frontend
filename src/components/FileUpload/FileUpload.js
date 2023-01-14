@@ -9,36 +9,8 @@ export default function FileUpload({ setStudentList, isLoading, setIsLoading }) 
     const [file, setFile] = useState(null);
 
     const handleUpdateStudentList = (studentsFound) => {
-        // const FAKE_API_RESPONSE = [
-        //     {
-        //         name: "Ryan",
-        //         present: true
-        //     },
-        //     {
-        //         name: "Anun",
-        //         present: false
-        //     },
-        //     {
-        //         name: "James",
-        //         present: true
-        //     },
-        // ]
-
         setStudentList(oldStudentList => {
-            return oldStudentList.map(s => {
-                // const newStudentStatus = FAKE_API_RESPONSE.find(x => x.name === s.name)
-                
-                // if (newStudentStatus) {
-                //     return {
-                //         ...s,
-                //         present: newStudentStatus.present
-                //     }
-                // } else {
-                //     return s;
-                // }
-
-                // check if student name is in the list of students found
-
+            return oldStudentList.map(s => {                
                 if (studentsFound.includes(s.name)) {
                     return {
                         ...s,
