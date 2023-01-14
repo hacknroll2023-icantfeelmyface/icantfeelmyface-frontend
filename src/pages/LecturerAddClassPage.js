@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Flex, Spinner, Stack, Heading, FormControl, FormLabel, Input, Button } from "@chakra-ui/react"
+import { Flex, Spinner, Stack, Heading, FormControl, FormLabel, Input, Button, useToast } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios";
 
@@ -11,6 +11,30 @@ export default function LecturerAddClassPage() {
     const [classCode, setClassCode] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
+    const toast = useToast()
+
+    const showSuccessToast = () => {
+        toast(
+            {
+            title: 'Class added',
+            description: "We've added a class for you!",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          })
+    }
+
+    const showErrorToast = () => {
+        toast(
+            {
+            title: 'Error.',
+            description: "Oops, something went wrong.",
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
+    }
+
     const handleAddClass = () => {
         const API_URL = `${URL}/api/class/`
         
@@ -19,8 +43,14 @@ export default function LecturerAddClassPage() {
         axios.post(API_URL, {
             'name': classCode
         })
-        .then((response) => {console.log(response)})
-        .catch((error) => {console.log(error)})
+        .then((response) => {
+            console.log(response);            
+            showSuccessToast();
+        })
+        .catch((error) => {
+            console.log(error)
+            showErrorToast();
+        })   
 
         setIsLoading(false);
     }

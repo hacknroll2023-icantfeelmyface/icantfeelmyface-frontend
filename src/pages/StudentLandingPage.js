@@ -16,7 +16,7 @@ export default function StudentLandingPage() {
           </Link>
 
           <Link>
-            <Button disabled={true} size="lg" colorScheme="cyan">
+            <Button disabled={true} size="lg" colorScheme="cyan" variant='ghost'>
               View Attendance
             </Button>
           </Link>

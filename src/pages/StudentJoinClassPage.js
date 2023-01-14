@@ -42,6 +42,30 @@ export default function StudentJoinClassPage() {
         });
     }, []);
 
+    const toast = useToast()
+
+    const showSuccessToast = () => {
+        toast(
+            {
+            title: 'You\'re in!',
+            description: "Welcome to the class!",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          })
+    }
+
+    const showErrorToast = () => {
+        toast(
+            {
+            title: 'Error.',
+            description: "Oops, something went wrong.",
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
+    }
+
     const handleStudentJoinClass = async () => {        
         const API_URL = `${URL}/api/students/`;
 
@@ -61,11 +85,14 @@ export default function StudentJoinClassPage() {
                 console.log(response);
 
                 setIsLoading(false);
+                showSuccessToast();
 
                 navigate("/student");
             })
             .catch((err) => {
                 console.error(err)
+
+                showErrorToast();
 
                 setIsLoading(false);
             });
@@ -108,7 +135,7 @@ export default function StudentJoinClassPage() {
                     </FormControl>
 
                     <Flex justifyContent="center">
-                        {isLoading ? <Spinner size="sm" /> : <Button style={{ width: "100%" }} onClick={handleStudentJoinClass} >Join Class</Button>}
+                        {isLoading ? <Spinner size="sm" /> : <Button disabled={name === "" || classCode === ""} style={{ width: "100%" }} onClick={handleStudentJoinClass} >Join Class</Button>}
                     </Flex>
                 </Stack>
             </Flex>

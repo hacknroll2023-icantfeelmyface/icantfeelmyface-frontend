@@ -9,16 +9,18 @@ import {
   FormLabel,
   Button,
 } from "@chakra-ui/react";
-import AppHeader from "../components/AppHeader/AppHeader";
 import { Link } from "react-router-dom";
 import axios from "axios";
+
+import { URL } from "../constants";
+import AppHeader from "../components/AppHeader/AppHeader";
 
 function LecturerChooseClass() {
   const [classCode, setClassCode] = useState("");
   const [data, setData] = useState([]);
 
   React.useEffect(() => {
-    axios.get("http://25.72.31.59:8000/api/class/").then((res) => {
+    axios.get(`${URL}/api/class/`).then((res) => {
       console.log(res.data);
       setData(res.data);
 
@@ -53,7 +55,7 @@ function LecturerChooseClass() {
                 }}
               >
                 {data.map((classCode) => (
-                  <option value={classCode.name}>{classCode.name}</option>
+                  <option value={classCode.id}>{classCode.name}</option>
                 ))}
               </Select>
 

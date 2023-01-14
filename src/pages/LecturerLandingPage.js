@@ -10,7 +10,7 @@ export default function LecturerLandingPage() {
             <Flex justifyContent="center">
                 <HStack>
                     <Link to="/lecturer/add-class">
-                        <Button size="lg" colorScheme="teal">Add Class</Button>
+                        <Button size="lg" colorScheme="teal" variant='ghost'>Add Class</Button>
                     </Link>
 
                     <Link to="/lecturer/view-attendance">

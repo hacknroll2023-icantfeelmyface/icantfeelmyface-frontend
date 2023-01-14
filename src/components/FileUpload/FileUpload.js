@@ -7,7 +7,7 @@ const API_URL = 'http://localhost:8000/upload'
 
 const AnalyzedFile = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} />
 
-export default function FileUpload({ setStudentList, isLoading, setIsLoading }) {
+export default function FileUpload({ setStudentList, isLoading, setIsLoading, classCode }) {
     const [file, setFile] = useState(null);
     const [analyzedFile, setAnalyzedFile] = useState(null);
 
