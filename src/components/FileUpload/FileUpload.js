@@ -50,6 +50,7 @@ export default function FileUpload({ studentList, setStudentList, isLoading, set
 
         const body = {
             'student_names': studentList.map(s => s.name),
+            'class_code': classCode,
             'image': encodedFile
         }
 
