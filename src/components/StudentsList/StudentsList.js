@@ -2,9 +2,9 @@ import { Stack, Box, Heading, TableContainer, Table, Tbody, Thead, Tr, Th, Td, B
 
 export default function StudentsList({ studentList }) {
     return (
-        <Stack padding="10" spacing={5}>
+        <Stack padding="5" spacing={5} backgroundColor="purple.700" borderRadius="10">
             <Box>
-                <Heading>Students List</Heading>
+                <Heading size="md">Students List</Heading>
             </Box>
 
             <Box>
@@ -40,7 +40,7 @@ export default function StudentsList({ studentList }) {
 
             <Box>
                 <Flex justifyContent="flex-end">
-                    <Button size="lg">Add Student</Button>
+                    <Button size="lg" colorScheme='blue'>Add Student</Button>
                 </Flex>
             </Box>
         </Stack>
