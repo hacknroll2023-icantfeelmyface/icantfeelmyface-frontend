@@ -1,44 +1,44 @@
-import { useState } from "react"
-import { Heading, Stack, Box } from "@chakra-ui/react"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
-import FileUpload from "./components/FileUpload/FileUpload";
-import StudentsList from "./components/StudentsList/StudentsList";
-import { MockStudentList } from "./mock_data/MockStudentList"
+import MainLandingPage from "./pages/MainLandingPage"
+import StudentLandingPage from "./pages/StudentLandingPage"
+import StudentJoinClassPage from "./pages/StudentJoinClassPage"
 
-const initialiseStudentList = (studentList) => {
-    return studentList.map((s) => {
-        return {
-            name: s.name,
-            present: false
-        }
-    })
+import LecturerLandingPage from "./pages/LecturerLandingPage"
+import LecturerAddClassPage from "./pages/LecturerAddClassPage"
+import LecturerViewAttendancePage from "./pages/LecturerViewAttendancePage"
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <MainLandingPage />
+    },
+    {
+        path: "/student",
+        element: <StudentLandingPage />,
+    },
+    {
+        path: "/student/join-class",
+        element: <StudentJoinClassPage />
+    },
+    {
+        path: "/lecturer",
+        element: <LecturerLandingPage />
+    },
+    {
+        path: "/lecturer/add-class",
+        element: <LecturerAddClassPage />
+    },
+    {
+        path: "/lecturer/view-attendance",
+        element: <LecturerViewAttendancePage />
+    },
+])
+
+export default function App() {
+    return (
+        <>
+            <RouterProvider router={router} />
+        </>
+    )
 }
-
-function App() {
-  const [studentList, setStudentList] = useState(initialiseStudentList(MockStudentList))
-  const [isLoading, setIsLoading] = useState(false)
-
-  return (
-    <>
-        <Stack padding="10" spacing="5">
-          <Box borderRadius={10} backgroundColor="green.800" padding="5">
-            <Heading>I Can't Feel My Face 😳</Heading>
-          </Box>
-
-          <FileUpload
-            setStudentList={setStudentList}
-            
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
-          <StudentsList
-            studentList={studentList}
-
-            isLoading={isLoading}
-          />
-        </Stack>
-    </>
-  );
-}
-
-export default App;

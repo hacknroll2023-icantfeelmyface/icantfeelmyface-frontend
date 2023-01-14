@@ -5,13 +5,16 @@ import axios from "axios"
 // const API_URL = 'https://httpbin.org/post';
 const API_URL = 'http://localhost:8000/upload'
 
+const AnalyzedFile = ({ data }) => <img src={`data:image/jpeg;base64,${data}`} />
+
 export default function FileUpload({ setStudentList, isLoading, setIsLoading }) {
     const [file, setFile] = useState(null);
+    const [analyzedFile, setAnalyzedFile] = useState(null);
 
-    const handleUpdateStudentList = (studentsFound) => {
+    const handleUpdate = (data) => {
         setStudentList(oldStudentList => {
             return oldStudentList.map(s => {                
-                if (studentsFound.includes(s.name)) {
+                if (data.names.includes(s.name)) {
                     return {
                         ...s,
                         present: true
@@ -21,6 +24,8 @@ export default function FileUpload({ setStudentList, isLoading, setIsLoading }) 
                 }
             })
         })
+
+        setAnalyzedFile(data.image)
     }
 
     const handleFileChange = (e) => {
@@ -44,7 +49,7 @@ export default function FileUpload({ setStudentList, isLoading, setIsLoading }) 
             }
         })
           .then((res) => res.data)
-          .then((data) => handleUpdateStudentList(data))
+          .then((data) => handleUpdate(data))
           .then(() => setIsLoading(false))
           .catch((err) => console.error(err));
       };
@@ -68,6 +73,10 @@ export default function FileUpload({ setStudentList, isLoading, setIsLoading }) 
                     <Flex justifyContent="flex-end">
                         {isLoading ? <Spinner /> : <Button disabled={!file} onClick={handleUploadClick} size="lg" colorScheme='blue'>Upload</Button>}
                     </Flex>
+                </Box>
+
+                <Box>
+                    {analyzedFile && <AnalyzedFile data={analyzedFile} />}
                 </Box>
             </Stack>
         </>
