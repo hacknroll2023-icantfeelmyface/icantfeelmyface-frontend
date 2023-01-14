@@ -15,6 +15,7 @@ import axios from "axios";
 
 import { URL } from "../constants";
 import AppHeader from "../components/AppHeader/AppHeader";
+<<<<<<< HEAD
 
 /* Helper functions */
 const convertBase64 = (file) => {
@@ -31,6 +32,9 @@ const convertBase64 = (file) => {
     };
   });
 };
+=======
+import { convertBase64 } from "../utils";
+>>>>>>> afff92305d951e34ab257ab3e2a72a8bf517713e
 
 export default function StudentJoinClassPage() {
   const [data, setData] = useState([]);
