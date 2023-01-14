@@ -1,33 +1,48 @@
 import { useState } from "react";
-import { Input, Button, Stack, Box, Heading, Flex } from "@chakra-ui/react"
+import { Input, Button, Stack, Box, Heading, Flex, Spinner } from "@chakra-ui/react"
+import axios from "axios"
 
-export default function FileUpload({ setStudentList }) {
+// const API_URL = 'https://httpbin.org/post';
+const API_URL = 'http://localhost:8000/upload'
+
+export default function FileUpload({ setStudentList, isLoading, setIsLoading }) {
     const [file, setFile] = useState(null);
 
-    const handleUpdateStudentList = (newStudentList) => {
-        const FAKE_API_RESPONSE = [
-            {
-                name: "Ryan",
-                present: true
-            },
-            {
-                name: "Anun",
-                present: false
-            },
-            {
-                name: "James",
-                present: true
-            },
-        ]
+    const handleUpdateStudentList = (studentsFound) => {
+        // const FAKE_API_RESPONSE = [
+        //     {
+        //         name: "Ryan",
+        //         present: true
+        //     },
+        //     {
+        //         name: "Anun",
+        //         present: false
+        //     },
+        //     {
+        //         name: "James",
+        //         present: true
+        //     },
+        // ]
 
         setStudentList(oldStudentList => {
             return oldStudentList.map(s => {
-                const newStudentStatus = FAKE_API_RESPONSE.find(x => x.name === s.name)
+                // const newStudentStatus = FAKE_API_RESPONSE.find(x => x.name === s.name)
                 
-                if (newStudentStatus) {
+                // if (newStudentStatus) {
+                //     return {
+                //         ...s,
+                //         present: newStudentStatus.present
+                //     }
+                // } else {
+                //     return s;
+                // }
+
+                // check if student name is in the list of students found
+
+                if (studentsFound.includes(s.name)) {
                     return {
                         ...s,
-                        present: newStudentStatus.present
+                        present: true
                     }
                 } else {
                     return s;
@@ -46,20 +61,19 @@ export default function FileUpload({ setStudentList }) {
         if (!file) {
           return;
         }
-    
-        // 👇 Uploading the file using the fetch API to the server
-        fetch('https://httpbin.org/post', {
-          method: 'POST',
-          body: file,
-          // 👇 Set headers manually for single file upload
-          headers: {
-            'content-type': file.type,
-            'content-length': `${file.size}`, // 👈 Headers need to be a string
-          },
+
+        setIsLoading(true)
+
+        const formData = new FormData();
+        formData.append('file', file);
+        axios.post(API_URL, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
         })
-          .then((res) => res.json())
-          .then((data) => console.log(data))
+          .then((res) => res.data)
           .then((data) => handleUpdateStudentList(data))
+          .then(() => setIsLoading(false))
           .catch((err) => console.error(err));
       };
 
@@ -80,7 +94,7 @@ export default function FileUpload({ setStudentList }) {
 
                 <Box>
                     <Flex justifyContent="flex-end">
-                        <Button disabled={!file} onClick={handleUploadClick} size="lg" colorScheme='blue'>Upload</Button>
+                        {isLoading ? <Spinner /> : <Button disabled={!file} onClick={handleUploadClick} size="lg" colorScheme='blue'>Upload</Button>}
                     </Flex>
                 </Box>
             </Stack>

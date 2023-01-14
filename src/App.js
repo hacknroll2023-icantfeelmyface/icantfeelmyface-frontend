@@ -16,6 +16,7 @@ const initialiseStudentList = (studentList) => {
 
 function App() {
   const [studentList, setStudentList] = useState(initialiseStudentList(MockStudentList))
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <>
@@ -26,9 +27,14 @@ function App() {
 
           <FileUpload
             setStudentList={setStudentList}
+            
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
           />
           <StudentsList
             studentList={studentList}
+
+            isLoading={isLoading}
           />
         </Stack>
     </>
